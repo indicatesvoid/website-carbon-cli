@@ -1,0 +1,24 @@
+{
+  "name": "website-carbon-cli",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "CLI tool to provide website carbon emission results from websitecarbon.com",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/indicatesvoid/website-carbon-cli.git"
+  },
+  "author": "William Lark",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/indicatesvoid/website-carbon-cli/issues"
+  },
+  "homepage": "https://github.com/indicatesvoid/website-carbon-cli#readme",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "node-fetch": "^3.0.0"
+  }
+}
