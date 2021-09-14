@@ -1,7 +1,8 @@
 // Hidden API docs: https://api.websitecarbon.com/
 
-import fetch from 'node-fetch';
-import chalk from 'chalk';
+import fetch from 'node-fetch'
+import chalk from 'chalk'
+import boxen from 'boxen'
 
 /**
  * Runs a carbon test and returns the results as JSON
@@ -14,7 +15,6 @@ export const runCarbonTest = async (url) => {
     try {
       const response = await fetch(endpoint)
       const data = await response.json()
-      // console.log(`results: `, data)
       resolve(data)
     } catch (error) {
       reject(error)
@@ -26,22 +26,40 @@ export const runCarbonTest = async (url) => {
  * Pretty prints results of carbon test to the console
  * @param {Object} results JSON results from API
  */
-export const prettyPrintResults = (results) => {
-  // print cleaner than //
-  const cleanerThanPct = results.cleanerThan * 100
-  const isGreen = cleanerThanPct > 50
-  let chalkStyle = chalk.bold[isGreen ? 'green' : 'red']
-  console.log(`${chalk.bold(
-    `Cleaner than ${chalkStyle(`${cleanerThanPct}%`)} of sites tested`
-  )}`)
+export const prettyPrintResults = (results) => { 
+  // method - print cleaner than //
+  const cleanerThanPretty = () => {
+    const cleanerThanPct = results.cleanerThan * 100
+    const isGreen = cleanerThanPct > 50
+    let chalkStyle = chalk.bold[isGreen ? 'green' : 'red']
+    return `${chalk.bold(
+      `Cleaner than ${chalkStyle(`${cleanerThanPct}%`)} of sites tested`
+    )}`
+  }
 
-  // print emissions //
-  const powerSource = results.isGreen ? 'renewable' : 'grid'
-  const emissions = results.statistics.co2[powerSource]
-  console.log(chalk.dim(
-    `🏭 Emissions: ${emissions.grams.toPrecision(3)}g / page view`
-  ))
+  // method - print emissions //
+  const emissionsPretty = () => {
+    const powerSource = results.isGreen ? 'renewable' : 'grid'
+    const emissions = results.statistics.co2[powerSource]
+    return `🏭 Emissions: ${chalk.bold(emissions.grams.toPrecision(3))}g / page view`
+  }
 
   // print other data (green hosting or not, etc) //
   // TBD
+
+  // actually print everything, but put it in a box //
+  console.log(boxen(`
+    ${cleanerThanPretty()}
+    ${emissionsPretty()}
+  `.trim(), {
+    title: 'Results',
+    titleAlignment: 'center',
+    padding: 1
+  }))
+
+  // print last tested date //
+  let date = new Date(results.timestamp * 1000) // timestamp must be converted first to ms
+  console.log(
+    chalk.dim.italic(`Last tested on ${date.toString()}`)
+  )
 }
