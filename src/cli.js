@@ -1,15 +1,21 @@
-import { runCarbonTest, prettyPrintResults } from "./website-carbon.js";
-import ora from 'ora';
+import { runCarbonTest, prettyPrintResults } from "./website-carbon.js"
+import ora from 'ora'
 
-export function cli(args) {
-  args = args.slice(2);
-  let url = args[0] || undefined;
+const run = (cli) => {
+  const url = cli.input.length && cli.input[0]
+  const noFlags = !cli.flags.pretty && !cli.flags.raw
+  
   if(url) {
-    const spinner = ora(`Running carbon test for ${url}...`).start();
+    const spinner = ora(`Running carbon test for ${url}...`).start()
     runCarbonTest(url)
       .then(json => {
         spinner.succeed()
-        prettyPrintResults(json)
+
+        if(cli.flags.pretty || noFlags) {
+          prettyPrintResults(json)
+        }
+        if(cli.flags.raw) console.log(json);
+
       })
       .catch(e => {
         spinner.fail()
@@ -17,3 +23,5 @@ export function cli(args) {
       })
   }
 }
+
+export default run

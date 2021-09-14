@@ -1,10 +1,11 @@
 {
   "name": "website-carbon-cli",
-  "version": "0.1.0",
+  "type": "module",
+  "version": "0.2.0",
   "description": "CLI tool to provide website carbon emission results from websitecarbon.com",
   "main": "index.js",
   "bin": {
-    "web-carbon": "bin/web-carbon"
+    "web-carbon": "bin/web-carbon.js"
   },
   "keywords": [
     "cli",
@@ -24,8 +25,10 @@
   },
   "homepage": "https://github.com/indicatesvoid/website-carbon-cli#readme",
   "dependencies": {
+    "boxen": "^5.1.1",
     "chalk": "^4.1.2",
     "esm": "^3.2.25",
+    "meow": "^10.1.1",
     "node-fetch": "^2.6.2",
     "ora": "^5.4.1"
   }
